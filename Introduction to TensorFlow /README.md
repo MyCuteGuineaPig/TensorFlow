@@ -30,26 +30,26 @@ train_generator = train_datagen.flow_from_directory(
 
 ### Some Link to Learn:
 
-learn more about bias and techniques to avoid it https://developers.google.com/machine-learning/fairness-overview/
+[learn more about bias and techniques to avoid it](https://developers.google.com/machine-learning/fairness-overview/)
  
-Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
+[Fashion MNIST]( https://github.com/zalandoresearch/fashion-mnist)
 
-```Con2D``` and ```MaxPooling2D```: https://github.com/tensorflow/docs/tree/r1.8/site/en/api_docs 
+[```Con2D``` and ```MaxPooling2D```](https://github.com/tensorflow/docs/tree/r1.8/site/en/api_docs) 
 
-Learn more convolutional 2d layer  https://www.youtube.com/playlist?list=PLkDaE6sCZn6Gl29AoE31iwdVwSG-KnDzF
+[Learn more convolutional 2d layer](https://www.youtube.com/playlist?list=PLkDaE6sCZn6Gl29AoE31iwdVwSG-KnDzF)
 
-Image Filtering: https://lodev.org/cgtutor/filtering.html 
+[Image Filtering](https://lodev.org/cgtutor/filtering.html) 
 
-Video of TensorFlow solving real-world problem: https://www.youtube.com/watch?v=NlpS-DhayQA
+[Video of TensorFlow solving real-world problem](https://www.youtube.com/watch?v=NlpS-DhayQA)
 
-Understanding  Cross Entroy Loss: https://gombru.github.io/2018/05/23/cross_entropy_loss/
+[Understanding  Cross Entroy Loss](https://gombru.github.io/2018/05/23/cross_entropy_loss/)
 
-RMSProp: http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf
-         https://www.tensorflow.org/versions/r1.14/api_docs/python/tf/train/RMSPropOptimizer
+[RMSProp Lecture Slide](http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf)
+[RMSProp TensorFlow](https://www.tensorflow.org/versions/r1.14/api_docs/python/tf/train/RMSPropOptimizer)
          
- Horses or Humans Convnet: https://github.com/lmoroney/dlaicourse/blob/master/Course%201%20-%20Part%208%20-%20Lesson%202%20-%20Notebook.ipynb
+[Horses or Humans Convnet](https://github.com/lmoroney/dlaicourse/blob/master/Course%201%20-%20Part%208%20-%20Lesson%202%20-%20Notebook.ipynb)
 
-Horses or Humans with Validation: https://github.com/lmoroney/dlaicourse/blob/master/Course%201%20-%20Part%208%20-%20Lesson%203%20-%20Notebook.ipynb
+[Horses or Humans with Validation](https://github.com/lmoroney/dlaicourse/blob/master/Course%201%20-%20Part%208%20-%20Lesson%203%20-%20Notebook.ipynb)
 
-Horses or Humans with Compacting of Images: https://github.com/lmoroney/dlaicourse/blob/master/Course%201%20-%20Part%208%20-%20Lesson%204%20-%20Notebook.ipynb
+[Horses or Humans with Compacting of Images](https://github.com/lmoroney/dlaicourse/blob/master/Course%201%20-%20Part%208%20-%20Lesson%204%20-%20Notebook.ipynb)
 
