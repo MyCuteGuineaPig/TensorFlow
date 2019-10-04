@@ -59,7 +59,37 @@ model.compile(optimizers = RMSprop(lr = 0.001),
               metrics = ['acc'])
 ```
 
+#### Multiclass Classifications
 
+- change ```class_mode``` from ```binary``` to ```categorical```
+- change model output layer units and ```activation``` from sigmoid to softmax
+    - output layer all probability sum to 1
+- chnage ```compile``` loss function from ```binary_crossentropy```  to ```categorical_crossentropy``` or ```sparse_categorical_crossentropy```
+
+```python
+train_generator = train_datagen.flow_from_directory(train_dir,
+                                                    batch_size = 20,
+                                                    class_mode = 'categorical', 
+                                                    target_size = (150, 150
+model = tf.keras.models.Sequential([
+    # Your Code Here
+    tf.keras.layers.Conv2D(16,(3,3), activation = 'relu', input_shape = (150,150, 3)),
+    tf.keras.layers.MaxPooling2D(2,2),
+    tf.keras.layers.Conv2D(32,(3,3), activation = 'relu'),
+    tf.keras.layers.MaxPooling2D(2,2),
+    tf.keras.layers.Conv2D(64,(3,3), activation = 'relu'),
+    tf.keras.layers.MaxPooling2D(2,2),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(128, activation = tf.nn.relu),
+    tf.keras.layers.Dense(3, activation = 'softmax') 
+])
+
+ model.compile( loss = 'categorical_crossentropy', 
+                optimizer = RMSprop(lr=0.001), 
+                metrics=['acc'])
+     
+
+```
 
 
 
@@ -77,8 +107,18 @@ model.compile(optimizers = RMSprop(lr = 0.001),
 
 [TensorFlow Transfer learning with a pretrained ConvNet](https://www.tensorflow.org/tutorials/images/transfer_learning)
 
-[A copy of pretrained weights for inception neural network] (https://storage.googleapis.com/mledu-datasets/inception_v3_weights_tf_dim_ordering_tf_kernels)
+[A copy of pretrained weights for inception neural network](https://storage.googleapis.com/mledu-datasets/inception_v3_weights_tf_dim_ordering_tf_kernels)
 
-[Understanding Dropout] (https://www.youtube.com/watch?v=ARq74QuavAo)
+[Understanding Dropout](https://www.youtube.com/watch?v=ARq74QuavAo)
 
 
+#### Multiclass Classifications
+
+All dataset have been generated using CGI techniques as an experiment in determining if a CGI-based dataset can be used for classification against real images. Each image is 300x300 in 24-bit color. Generated with diverse array of models, male and female, and lots of different skin tones. All data can be found [here](http://www.laurencemoroney.com/rock-paper-scissors-dataset/)
+
+[Rock Paper Scissors Training Set](https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps.zip): 
+
+
+[Rock Paper Scissors Test Set](https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-test-set.zip) 
+
+[Rock Paper Scissors Validation Set](https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-validation.zip): for predictions.
