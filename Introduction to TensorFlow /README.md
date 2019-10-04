@@ -7,7 +7,7 @@
 train_datagen = ImageDataGenerator(rescale=1/255)
 train_generator = train_datagen.flow_from_directory(
         '/tmp/horse-or-human/',  # This is the source directory for training images
-        target_size=(300, 300),  # All images will be resized to 150x150
+        target_size=(300, 300),  # Images may be different size, All images will be resized to 300x300
         batch_size=128       # how many data for one fetching 
         class_mode='binary')
 ```
