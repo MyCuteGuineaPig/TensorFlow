@@ -19,9 +19,35 @@ train_generator = train_datagen.flow_from_directory(
         train_generator, # directory
         steps_per_epoch=8, # how many steps for loading data for one epoch
         epochs=15, 
+         validation_data=validation_generator, # validation data, can get loss, acc from history 
         verbose=1) # 1 is animation, 0 is no animation
   ```
 6. **Test model**: ```test_loss, test_acc  = model.evaluate(test_images, test_labels)```
+
+7. **Get Accuracy and Loss**: 
+
+```
+import matplotlib.pyplot as plt
+acc = history.history['acc']
+val_acc = history.history['val_acc']
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+
+epochs = range(len(acc))
+
+plt.plot(epochs, acc, 'r', label='Training accuracy')
+plt.plot(epochs, val_acc, 'b', label='Validation accuracy')
+plt.title('Training and validation accuracy')
+
+plt.figure()
+
+plt.plot(epochs, loss, 'r', label='Training Loss')
+plt.plot(epochs, val_loss, 'b', label='Validation Loss')
+plt.title('Training and validation loss')
+plt.legend()
+
+plt.show()
+```
 
 ### Rule of thumb:
 
