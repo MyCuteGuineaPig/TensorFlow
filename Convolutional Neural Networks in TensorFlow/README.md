@@ -23,4 +23,5 @@ train_datagen = ImageDataGenerator(
 
 [Image Augmentation](https://github.com/keras-team/keras-preprocessing): like rotating 90 degrees of images. It doesn't require you to edit your raw images, nor does it amend them for you on-disk. It does it in-memory as it's performing the training, allowing you to experiment without impacting your dataset.
 
-Image Augmentation implementation: [APIs at the Keras](https://keras.io/preprocessing/image/)
+[APIs at the Keras](https://keras.io/preprocessing/image/):  Image Augmentation implementation
+
