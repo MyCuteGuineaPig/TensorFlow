@@ -27,7 +27,7 @@ local_weights_file = '/tmp/inception_v3_weights_tf_dim_ordering_tf_kernels_notop
 
 pre_trained_model = InceptionV3(input_shape = (150,150,3), 
                                 include_top = False, # specify that ignore fully-connected layer at the top and straight to the convolution
-                                weights = None) # you don't want to use the built-in weights but the snapshot you just download it
+                                weights = None) # you don't want to use the built-in weights but use the snapshot you just download it
 
 pre_trained_model.load_weights(local_weights_file)
 
