@@ -62,6 +62,112 @@ Output
 
 
 
+#### TFDS Dataset
+
+- install TFDS ```pip install -q tensorflow-datasets```
+
+```python
+import tensorflow as tf
+print(tf.__version__)
+
+tf.enable_eager_execution() #not necessary if you have TF 2.0 installed
+
+import tensorflow_datasets as tfds
+imdb, info = tfds.load("imdb_reviews", with_info=True, as_supervised=True)
+```
+
+**Deal with dataset**
+
+```
+import numpy as np
+
+train_data, test_data = imdb['train'], imdb['test'] #25000 fro training, 25000 for testing
+training_sentences, training_labels = [], []
+testing_sentences, testing_labels = [], []
+
+# str(s.tonumpy()) is needed in Python3 instead of just s.numpy()
+for s,l in train_data:
+  training_sentences.append(str(s.numpy()))
+  training_labels.append(l.numpy())
+  
+for s,l in test_data:
+  testing_sentences.append(str(s.numpy()))
+  testing_labels.append(l.numpy())
+  
+training_labels_final = np.array(training_labels)
+testing_labels_final = np.array(testing_labels)
+```
+
+#### Embedding 
+
+-  ```tf.keras.layers.Embedding```: Use specified dimension (input_dim x output_dim) Embedded matrix to get embedded vector for each word in the sequence with length of ```input_length```. Embedded matrix applied to each word is the same. Output will be  input_length x output_dim
+    - ```input_dim``` as vocabulary dimension for one-hot vector
+    - ```output_dim``` as embedding dimension. 
+    - ```input_length```: Length of input sequences, when it is constant. This argument is **required** if you are going to connect ```Flatten``` then ```Dense``` layers upstream(without it, the shape of the dense outputs cannot be computed).
+
+```python
+vocab_size = 10000
+embedding_dim = 16
+max_length = 120
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(vocab_size, embedding_dim, input_length=max_length), # parameter is embedding matrix size = vocab_size x embedding_dim, input_length is length of sentence
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(6, activation = tf.nn.relu),
+    tf.keras.layers.Dense(1, activation = 'sigmoid')                             
+])
+```
+
+**Train Model**
+
+```python
+trunc_type = 'post'
+oov_tok = "<OOV>"
+
+tokenizer = Tokenizer(num_words = vocab_size, oov_token = oov_tok)
+tokenizer.fit_on_texts(training_sentences)
+sequences = tokenizer.texts_to_sequences(training_sentences)
+padded = pad_sequences(sequences, maxlen = max_length, truncating = trunc_type)
+
+testing_sequences = tokenizer.texts_to_sequences(testing_sentences)
+testing_padded = pad_sequences(testing_sequences, maxlen = max_length, truncating = trunc_type)
+
+model.compile(loss = 'binary_crossentropy', optimizer = 'adam', metrics = ['accuracy'])
+model.fit(padded, 
+          training_labels_final, 
+          epochs = 10, 
+          validation_data = (testing_padded, testing_labels_final))
+
+```
+
+#### Use TFDS Pre-tained Tokenizer
+
+We use **subwords8k** for **imdb_reviews**, must use **tensorflow version 2.0+**. 
+
+- ```tokenizer = info.features["text"].encoder```: get pre-trained tokenizer
+- ```tokenizer.encode(sample_string)```: encode string use pre-trained tokenizer
+- ``` tokenizer.decode(tokenized_string)```: encode string use pre-trained tokenizer
+
+```python
+import tensorflow_datasets as tfds
+imdb, info = tfds.load("imdb_reviews/subwords8k", with_info = True, as_supervised = True)
+train_data, test_data = imdb["train"], imdb["test"]
+
+tokenizer = info.features["text"].encoder #access tokenizer from Pre-trained 
+
+print(tokenizer.subwords) #by looking up its vocabulary
+
+sample_string = "TensorFlow, from basics to mastery"
+
+tokenized_string = tokenizer.encode(sample_string)
+print("Tokenized string is {}".format(tokenized_string))
+
+original_string = tokenizer.decode(tokenized_string)
+print("The original string: {}".format(original_string))
+```
+
+
+
 ## Useful Link
 
 [News Headlines Dataset For Sarcasm Detection](https://www.kaggle.com/rmisra/news-headlines-dataset-for-sarcasm-detection/home)
