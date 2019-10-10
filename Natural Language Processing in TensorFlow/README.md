@@ -208,6 +208,8 @@ model = tf.keras.Sequential([
 
 [LSTM by Andrew Ng](https://www.coursera.org/lecture/nlp-sequence-models/long-short-term-memory-lstm-KXoay)
 
+[Global Vectors for Word Representation](https://nlp.stanford.edu/projects/glove/)
+
 [Keras Bidirection Return Sequence](https://www.dlology.com/blog/how-to-use-return_state-or-return_sequences-in-keras/#targetText=By%20default%2C%20the%20return_sequences%20is,representation%20of%20the%20input%20sequence.)
 
 
