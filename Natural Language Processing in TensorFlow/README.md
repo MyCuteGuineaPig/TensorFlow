@@ -62,7 +62,7 @@ Output
 
 
 
-#### TFDS Dataset
+### TFDS Dataset
 
 - install TFDS ```pip install -q tensorflow-datasets```
 
@@ -98,7 +98,7 @@ training_labels_final = np.array(training_labels)
 testing_labels_final = np.array(testing_labels)
 ```
 
-#### Embedding 
+### Embedding 
 
 -  ```tf.keras.layers.Embedding```: Use specified dimension (input_dim x output_dim) Embedded matrix to get embedded vector for each word in the sequence with length of ```input_length```. Embedded matrix applied to each word is the same. Output will be  input_length x output_dim
     - ```input_dim``` as vocabulary dimension for one-hot vector
@@ -140,7 +140,7 @@ model.fit(padded,
 
 ```
 
-#### Use TFDS Pre-tained Tokenizer
+### Use TFDS Pre-tained Tokenizer
 
 We use **subwords8k** for **imdb_reviews**, must use **tensorflow version 2.0+**. 
 
@@ -167,7 +167,7 @@ print("The original string: {}".format(original_string))
 ```
 
 
-#### LSTM & GRU
+### LSTM & GRU
 
 - ```tf.keras.layers.Bidirectional(tf.keras.layers.GRU(32))``` : Bidirectional RNN with GRU 
     - units: Positive integer, dimensionality of the output space
@@ -212,4 +212,6 @@ model = tf.keras.Sequential([
 
 [Keras Bidirection Return Sequence](https://www.dlology.com/blog/how-to-use-return_state-or-return_sequences-in-keras/#targetText=By%20default%2C%20the%20return_sequences%20is,representation%20of%20the%20input%20sequence.)
 
+[Training Dataset for Poetry Lyrics](https://storage.googleapis.com/laurencemoroney-blog.appspot.com/irish-lyrics-eof.txt)
 
+[Workbook for RNN Text Generation](https://www.tensorflow.org/tutorials/text/text_generation) :+1: **A good learning notebook**
