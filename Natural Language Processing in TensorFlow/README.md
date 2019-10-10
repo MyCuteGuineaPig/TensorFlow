@@ -167,6 +167,32 @@ print("The original string: {}".format(original_string))
 ```
 
 
+#### LSTM & GRU
+
+- ```tf.keras.layers.Bidirectional(tf.keras.layers.GRU(32))``` : Bidirectional RNN with GRU 
+    - units: Positive integer, dimensionality of the output space
+- ```tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64))```: Bidirectional RNN with LSTM 
+    - units: Positive integer, dimensionality of the output space
+    - ```return_sequences```: Boolean, Whether to return only last output (```False```) in the output sequence, or the full sequence(```True```).
+        - ``` return_sequence = True```： output dimenison will be ```(#Samples, #Time steps, #LSTM units)```
+        - ```return_sequence = False```, output dimenison will be ```(#Samples, #LSTM units)```, only one timestep for last hidden state output
+    - ```return_state```: Boolean. Whether to return the last state in addition to the output.
+
+```python
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(tokenizer.vocab_size, 64),
+    #Not output unit will be 128, even if we specify 64, but bidirectional rnn double it 
+    # return_sequences = True : ensure the output of LSTM match the desired inputs of next LSTM 
+    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64), return_sequences = True),
+    tf.keras.layers.Dense(64, activation = 'relu'),
+    tf.keras.layers.Dense(1, activation = 'sigmoid')
+])
+```
+
+
+
+
 
 ## Useful Link
 
