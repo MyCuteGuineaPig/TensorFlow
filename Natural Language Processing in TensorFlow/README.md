@@ -178,3 +178,10 @@ print("The original string: {}".format(original_string))
 
 [TFDS Subwords text encoder](https://www.tensorflow.org/datasets/api_docs/python/tfds/features/text/SubwordTextEncoder)
 
+[Coursera RNN sequence model](https://www.coursera.org/lecture/nlp-sequence-models/deep-rnns-ehs0S)
+
+[LSTM by Andrew Ng](https://www.coursera.org/lecture/nlp-sequence-models/long-short-term-memory-lstm-KXoay)
+
+[Keras Bidirection Return Sequence](https://www.dlology.com/blog/how-to-use-return_state-or-return_sequences-in-keras/#targetText=By%20default%2C%20the%20return_sequences%20is,representation%20of%20the%20input%20sequence.)
+
+
