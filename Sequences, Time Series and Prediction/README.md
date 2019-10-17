@@ -114,3 +114,5 @@ plt.show()
 ## Useful Link
 
 [Huber Loss](https://en.wikipedia.org/wiki/Huber_loss)
+
+[LSTM Coursera Lecture](https://www.coursera.org/lecture/nlp-sequence-models/long-short-term-memory-lstm-KXoay)
