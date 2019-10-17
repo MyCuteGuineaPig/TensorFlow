@@ -110,3 +110,7 @@ epochs = range(len(loss))
 plt.plot(epochs, loss, 'b', label='Training Loss')
 plt.show()
 ```
+
+## Useful Link
+
+[Huber Loss](https://en.wikipedia.org/wiki/Huber_loss)
