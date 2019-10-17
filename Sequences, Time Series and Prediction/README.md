@@ -1,3 +1,10 @@
+## Clear Session
+
+Destroys the current TF graph and creates a new one.: Clear any interal variables, earlier version not affect later version of model
+
+```python
+tf.keras.backend.clear_session()
+```
 
 ## Pandas Plot Autocorrelation
 
@@ -110,6 +117,23 @@ epochs = range(len(loss))
 plt.plot(epochs, loss, 'b', label='Training Loss')
 plt.show()
 ```
+
+## Lambda Layer
+
+allow coder to write an arbitrary piece of code as a layer in the neural network
+
+```python
+model = tf.keras.model.Sequential([
+     tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis =-1), input_shape = [None]),
+     tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32, return_sequence = True)),
+     tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32, return_sequence = True)),
+     tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32)),
+     tf.keras.layers.Dense(1),
+     tf.keras.layers.Lambda(lambda x: x * 100.0)                              
+])
+```
+
+
 
 ## Useful Link
 
