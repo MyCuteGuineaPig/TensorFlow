@@ -140,3 +140,5 @@ model = tf.keras.model.Sequential([
 [Huber Loss](https://en.wikipedia.org/wiki/Huber_loss)
 
 [LSTM Coursera Lecture](https://www.coursera.org/lecture/nlp-sequence-models/long-short-term-memory-lstm-KXoay)
+
+[Mini Batch Gradient Descent ](https://www.youtube.com/watch?v=4qJaSmvhxi8)
