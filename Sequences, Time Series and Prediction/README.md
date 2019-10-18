@@ -142,3 +142,5 @@ model = tf.keras.model.Sequential([
 [LSTM Coursera Lecture](https://www.coursera.org/lecture/nlp-sequence-models/long-short-term-memory-lstm-KXoay)
 
 [Mini Batch Gradient Descent ](https://www.youtube.com/watch?v=4qJaSmvhxi8)
+
+[Sunspots From KAGGLE](https://www.kaggle.com/robervalt/sunspots/)
