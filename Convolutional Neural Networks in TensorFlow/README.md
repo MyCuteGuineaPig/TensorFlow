@@ -6,7 +6,7 @@ train_datagen = ImageDataGenerator(
     rotation_range = 40, #image  will rotate between 0 - 40 degree
     width_shift_range = 0.2,  # randomly shift up to 20% horizontal 
     height_shift_range = 0.2, # randomly shift up to 20% vertically
-    shear_range = 0.2, #shear up randomly 20% percent of the image
+    shear_range = 0.2, #shear randomly up to  20% percent of the image
     zoom_range =0.2, #zoom random amount up to 20% of image
     horizontal_flip = True, # image will be flip randomly 
     fill_mode = 'nearest' # fill nay pixels that maybe lost by the operations. I'm just going to stick with nearest here.
@@ -64,7 +64,7 @@ model.compile(optimizers = RMSprop(lr = 0.001),
 - change ```class_mode``` from ```binary``` to ```categorical```
 - change model output layer units and ```activation``` from sigmoid to softmax
     - output layer all probability sum to 1
-- chnage ```compile``` loss function from ```binary_crossentropy```  to ```categorical_crossentropy``` or ```sparse_categorical_crossentropy```
+- change ```compile``` loss function from ```binary_crossentropy```  to ```categorical_crossentropy``` or ```sparse_categorical_crossentropy```
 
 ```python
 train_generator = train_datagen.flow_from_directory(train_dir,
