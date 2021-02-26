@@ -98,6 +98,7 @@ training_labels_final = np.array(training_labels)
 testing_labels_final = np.array(testing_labels)
 ```
 
+
 ### Embedding 
 
 -  ```tf.keras.layers.Embedding```: Use specified dimension (input_dim x output_dim) Embedded matrix to get embedded vector for each word in the sequence with length of ```input_length```. Embedded matrix applied to each word is the same. Output will be  input_length x output_dim
@@ -137,6 +138,94 @@ model.fit(padded,
           training_labels_final, 
           epochs = 10, 
           validation_data = (testing_padded, testing_labels_final))
+
+```
+
+## Visualize Embedding
+
+After generalize file, open [Tensorflow Projecter](https://projector.tensorflow.org/) to project word embedding and check Sphereize data
+
+![](/img/post/tensorflow/c3_1.png)
+
+```python
+import tensorflow as tf
+import tensorflow_datasets as tfds
+imdb, info = tfds.load("imdb_reviews", with_info=True, as_supervised=True)
+
+import numpy as np
+
+# Load
+train_data, test_data = imdb['train'], imdb['test']
+
+training_sentences = []
+training_labels = []
+
+testing_sentences = []
+testing_labels = []
+
+# str(s.tonumpy()) is needed in Python3 instead of just s.numpy() 
+
+for s,l in train_data:
+  training_sentences.append(s.numpy().decode('utf8'))
+  training_labels.append(l.numpy())
+  
+for s,l in test_data:
+  testing_sentences.append(s.numpy().decode('utf8'))
+  testing_labels.append(l.numpy())
+  
+training_labels_final = np.array(training_labels)
+testing_labels_final = np.array(testing_labels)
+
+vocab_size = 10000
+embedding_dim = 16
+max_length = 120
+trunc_type='post'
+oov_tok = "<OOV>"
+
+# Tokenize sentence
+
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+tokenizer = Tokenizer(num_words = vocab_size, oov_token=oov_tok)
+tokenizer.fit_on_texts(training_sentences)
+word_index = tokenizer.word_index
+sequences = tokenizer.texts_to_sequences(training_sentences)
+padded = pad_sequences(sequences,maxlen=max_length, truncating=trunc_type)
+
+testing_sequences = tokenizer.texts_to_sequences(testing_sentences)
+testing_padded = pad_sequences(testing_sequences,maxlen=max_length)
+
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(vocab_size, embedding_dim, input_length=max_length),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(6, activation='relu'),
+    tf.keras.layers.Dense(1, activation='sigmoid')
+])
+model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
+
+num_epochs = 10
+model.fit(padded, training_labels_final, epochs=num_epochs, validation_data=(testing_padded, testing_labels_final))
+
+e = model.layers[0]
+weights = e.get_weights()[0] # Note e.get_weights() return a list have only 1 element 
+print(weights.shape) # shape: (vocab_size, embedding_dim)
+
+reverse_word_index = dict([(value, key) for (key, value) in word_index.items()]) # token as key and word as value
+
+
+import io
+
+out_v = io.open('vecs.tsv', 'w', encoding='utf-8')
+out_m = io.open('meta.tsv', 'w', encoding='utf-8')
+for word_num in range(1, vocab_size):
+  word = reverse_word_index[word_num]
+  embeddings = weights[word_num]
+  out_m.write(word + "\n")
+  out_v.write('\t'.join([str(x) for x in embeddings]) + "\n")
+out_v.close()
+out_m.close()
 
 ```
 
@@ -185,11 +274,18 @@ model = tf.keras.Sequential([
     #Not output unit will be 128, even if we specify 64, but bidirectional rnn double it 
     # return_sequences = True : ensure the output of LSTM match the desired inputs of next LSTM 
     tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64), return_sequences = True),
+    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32)),
     tf.keras.layers.Dense(64, activation = 'relu'),
     tf.keras.layers.Dense(1, activation = 'sigmoid')
 ])
 ```
 
+### To One-hot vector
+
+```python
+#labels (mx1) is a numpy array which one element is each label for trainning exmple 
+ys = tf.keras.utils.to_categorical(labels, num_classes=total_words)
+```
 
 
 
@@ -198,9 +294,15 @@ model = tf.keras.Sequential([
 
 [News Headlines Dataset For Sarcasm Detection](https://www.kaggle.com/rmisra/news-headlines-dataset-for-sarcasm-detection/home)
 
+[News headlines dataset for sarcasm detection](https://rishabhmisra.github.io/publications/)
+
 [IMDB Review Dataset](http://ai.stanford.edu/~amaas/data/sentiment/): You will find here 50,000 movie reviews which are classified as positive of negative.
 
 [Tensorflow Projector](http://projector.tensorflow.org/)
+
+[Tensorflow Dataset](https://github.com/tensorflow/datasets/tree/master/docs/catalog)
+
+[Tensorflow IMDB Dataset](https://github.com/tensorflow/datasets/blob/master/docs/catalog/imdb_reviews.md)
 
 [TFDS Subwords text encoder](https://www.tensorflow.org/datasets/api_docs/python/tfds/features/text/SubwordTextEncoder)
 
@@ -214,4 +316,4 @@ model = tf.keras.Sequential([
 
 [Training Dataset for Poetry Lyrics](https://storage.googleapis.com/laurencemoroney-blog.appspot.com/irish-lyrics-eof.txt)
 
-[Workbook for RNN Text Generation](https://www.tensorflow.org/tutorials/text/text_generation) :+1: **A good learning notebook**
+[Workbook for RNN Text Generation](https://www.tensorflow.org/tutorials/text/text_generation) Generate text using a character-based RNN:+1: **A good learning notebook**
