@@ -22,6 +22,7 @@
 ## [Natural Language Processing in TensorFlow](https://github.com/beckswu/TensorFlow/tree/master/Natural%20Language%20Processing%20in%20TensorFlow)
 
 - Tokenizer/ TFDS Pre-tained Tokenizer
+- TFDS Dataset
 - Padding
 - Embedding
 - Using Pre-Trained Word Embeddings
@@ -36,8 +37,9 @@
 - Clear Session
 - Autocorrelation Graph
 - Evaluation Metrics
-- Generate Data From TimeSeries DataSet
+- Generate Data From Time Series DataSet
 - DNN/Linear Regression For Time Series Prediction
+- Plot Prediction
 - Lambda Layer
 - LSTM for Time Series Prediction
 - Conv + LSTM for Time Series Prediction

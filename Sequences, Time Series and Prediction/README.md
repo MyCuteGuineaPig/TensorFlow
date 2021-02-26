@@ -32,7 +32,7 @@ autocorrelation_plot(series)
   - ```mape = np.abs(errors / x_valid).mean()```:
 
 
-## Generate Data From TimeSeries DataSet
+## Generate Data From Time Series DataSet
 
 ```python
 dataset = tf.data.Dataset.range(10)
@@ -285,7 +285,7 @@ From the graph, find the best learning rate is 1e-5. Then can fix learning rate 
 ![](lr1.png)
 
 
-#### Conv + LSTM for Time Series Prediction
+### Conv + LSTM for Time Series Prediction
 
 **If training MAE and loss fluctuate around, could try different batch size**
 

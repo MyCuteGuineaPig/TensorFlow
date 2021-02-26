@@ -119,7 +119,7 @@ model = tf.keras.Sequential([
 ])
 ```
 
-#### Using Pre-Trained Word Embeddings
+### Using Pre-Trained Word Embeddings
 
 ```python
 word_to_vec_map = {}
@@ -178,7 +178,7 @@ model.fit(padded,
 
 ```
 
-#### Get Weight
+### Get Weight
 
 ```python
 model = tf.keras.Sequential([
