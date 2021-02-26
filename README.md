@@ -30,7 +30,7 @@
 ## [Sequences, Time Series and Prediction](https://github.com/beckswu/TensorFlow/tree/master/Sequences%2C%20Time%20Series%20and%20Prediction)
 
 - Clear Session
-- Autocorrelation graph
+- Autocorrelation Graph
 - Evaluation Metrics
 - Generate Data From TimeSeries DataSet
 - DNN/Linear Regression For Time Series Prediction
