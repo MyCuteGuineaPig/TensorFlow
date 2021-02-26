@@ -8,6 +8,10 @@
 - Train model
 - Image Data Generator
 - Evaluate / Predict model
+- Fashion MNIST Dataset
+- Callback
+- Intermidate Layer Output 
+- Visualize Intermediate Representations
 
 ## [Convolutional Neural Networks in TensorFlow](https://github.com/beckswu/TensorFlow/tree/master/Convolutional%20Neural%20Networks%20in%20TensorFlow)
 
