@@ -119,6 +119,43 @@ model = tf.keras.Sequential([
 ])
 ```
 
+#### Using Pre-Trained Word Embeddings
+
+```python
+word_to_vec_map = {}
+with open("glove.6B.50d.txt", 'r') as f:
+    for line in f:
+        line = line.strip().split()
+        curr_word = line[0]
+        word_to_vec_map[curr_word] = np.array(line[1:], dtype=np.float64)
+
+# *************** Method 1 *****************
+emb_dim = 20
+vocab_size =  len(word_to_index)+1 # adding 1 to fit Keras embedding (requirement), word_to_index dictionary
+
+embedding_matrix = np.zeros((vocab_size, emb_dim))
+
+for word, index in word_to_index.items():
+    embedding_matrix[index,:] = word_to_vec_map[word]
+
+embedding_layer = Embedding(input_dim=vocab_size, output_dim=emb_dim, trainable = False)
+
+# Build the embedding layer, it is required before setting the weights of the embedding layer. Do not modify the "None".
+embedding_layer.build((None,))
+
+# Set the weights of the embedding layer to the embedding matrix. Your layer is now pretrained.
+embedding_layer.set_weights([embedding_matrix])
+e1 = embedding_layer.get_weights()[0][1][3]
+
+# *************** Method 2 *****************
+embedding_layer = Embedding(input_dim=vocab_size, output_dim=emb_dim, weights=[embedding_matrix], trainable = False)
+model= tf.keras.Sequential(embedding_layer)
+e2 = model.layer[0].get_weights()[0][1][3]
+
+print(e1 == e2) # return true
+
+```
+
 **Train Model**
 
 ```python

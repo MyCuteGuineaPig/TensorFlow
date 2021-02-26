@@ -14,6 +14,7 @@ Note: ```series``` need to be list either built-in list or ```np.array()```
 from pandas.plotting import autocorrelation_plot
 autocorrelation_plot(series)
 ```
+![](autocorrelation.png)
 
 ## Evaluation Metrics
 
@@ -138,7 +139,7 @@ def windwowed_dataset(series, window_size, batch_size, shuffle_buffer):
   return dataset
 ```
 
-## Train in DNN/Linear Regression
+## DNN/Linear Regression For Time Series Prediction
 
 - ```tf.keras.callbacks.LearningRateScheduler```: update learning rate after each epoch by callbacks
 
@@ -217,6 +218,7 @@ plt.axis([1e-8, 1e-3, 0, 300])
 
 ![](lr.png)
 
+
 #### Plot loss vs epoch
 ```python
 loss = history.history['loss']
@@ -232,15 +234,97 @@ allow coder to write an arbitrary piece of code as a layer in the neural network
 
 ```python
 model = tf.keras.model.Sequential([
-     tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis =-1), input_shape = [None]),
+     tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis =-1), input_shape = [None]), 
+     #tf.expand_dims(x, axis =-1), window dataset two dimensions (batch size, # time step), so add another dimension to represent #dims of each timestep (Here is 1). 
+     #In RNN, need three dimension, (batch_size, # time step,  dimensionality for each time step)
+
+     # tensorflow always first dimension is batch_size
+     #input_shape = None 是 second dimension, the number of timestep, None 表示可以handle any length
+
      tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32, return_sequence = True)),
      tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32, return_sequence = True)),
      tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32)),
      tf.keras.layers.Dense(1),
-     tf.keras.layers.Lambda(lambda x: x * 100.0)                              
+     tf.keras.layers.Lambda(lambda x: x * 100.0) 
+     # default RNN layer activation function is tanh value range(-1, 1)
+     # scale to 100, help training, 因为predict time series like 40, 70  instead of 0.4, 0.7                       
 ])
 ```
 
+##  LSTM for Time Series Prediction
+
+
+- [Huber loss](https://en.wikipedia.org/wiki/Huber_loss) less sensitive to outlier since data can get noisy, it's worth to try
+
+```python
+tf.keras.backend.clear_session() #clear internal variable
+
+tf.keras.backend.clear_session()
+dataset = windowed_dataset(x_train, window_size, batch_size, shuffle_buffer_size)
+
+model = tf.keras.models.Sequential([
+  tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1),
+                      input_shape=[None]),
+    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32, return_sequences=True)),
+  tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32)),
+  tf.keras.layers.Dense(1),
+  tf.keras.layers.Lambda(lambda x: x * 100.0)
+])
+
+lr_schedule = tf.keras.callbacks.LearningRateScheduler(
+    lambda epoch: 1e-8 * 10**(epoch / 20))
+optimizer = tf.keras.optimizers.SGD(lr=1e-8, momentum=0.9)
+model.compile(loss=tf.keras.losses.Huber(),
+              optimizer=optimizer,
+              metrics=["mae"])
+history = model.fit(dataset, epochs=100, callbacks=[lr_schedule])
+```
+
+From the graph, find the best learning rate is 1e-5. Then can fix learning rate as 1e-5 to retrain the model for more epochs (e.g. 500)
+
+![](lr1.png)
+
+
+#### Conv + LSTM for Time Series Prediction
+
+**If training MAE and loss fluctuate around, could try different batch size**
+
+Can try different window_size, Dense layer unit, learning rate to see if performance get better 
+
+```python
+def windowed_dataset(series, window_size, batch_size, shuffle_buffer):
+    series = tf.expand_dims(series, axis=-1) #expand one dimension to fit conv layer
+    ds = tf.data.Dataset.from_tensor_slices(series)
+    ds = ds.window(window_size + 1, shift=1, drop_remainder=True)
+    ds = ds.flat_map(lambda w: w.batch(window_size + 1))
+    ds = ds.shuffle(shuffle_buffer)
+    ds = ds.map(lambda w: (w[:-1], w[1:]))
+    return ds.batch(batch_size).prefetch(1)
+
+tf.keras.backend.clear_session()
+tf.random.set_seed(51)
+np.random.seed(51)
+#batch_size = 16
+dataset = windowed_dataset(x_train, window_size, batch_size, shuffle_buffer_size)
+
+model = tf.keras.models.Sequential([
+  tf.keras.layers.Conv1D(filters=32, kernel_size=3,
+                      strides=1, padding="causal",
+                      activation="relu",
+                      input_shape=[None, 1]),
+  tf.keras.layers.LSTM(32, return_sequences=True),
+  tf.keras.layers.LSTM(32, return_sequences=True),
+  tf.keras.layers.Dense(1),
+  tf.keras.layers.Lambda(lambda x: x * 200)
+])
+
+optimizer = tf.keras.optimizers.SGD(lr=1e-5, momentum=0.9)
+model.compile(loss=tf.keras.losses.Huber(),
+              optimizer=optimizer,
+              metrics=["mae"])
+history = model.fit(dataset,epochs=500)
+
+```
 
 
 ## Useful Link
