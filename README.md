@@ -20,6 +20,9 @@
 - Tokenizer/ TFDS Pre-tained Tokenizer
 - Padding
 - Embedding
+- Get Weights
+- Visualization Embedding
 - LSTM / GRU
+- One-hot vector
 - Text Generation
 

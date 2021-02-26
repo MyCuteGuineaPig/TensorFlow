@@ -141,6 +141,27 @@ model.fit(padded,
 
 ```
 
+#### Get Weight
+
+```python
+model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(10000, 16, input_length=120), # parameter is embedding matrix size = vocab_size x embedding_dim, input_length is length of sentence
+
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(6, activation = tf.nn.relu),
+    tf.keras.layers.Dense(1, activation = 'sigmoid')                             
+])
+
+e = model.layers[0]
+weights = e.get_weights()[0] # Note e.get_weights() return a list have only 1 element 
+
+print(weights.shape) #shape: (vocab_size, embedding_dim), (10000, 16)
+
+# 10000 words in corpus, and work in 16 dimensional array 
+
+```
+
+
 ## Visualize Embedding
 
 After generalize file, open [Tensorflow Projecter](https://projector.tensorflow.org/) to project word embedding and check Sphereize data
@@ -228,6 +249,9 @@ out_v.close()
 out_m.close()
 
 ```
+
+![](visualization.png)
+
 
 ### Use TFDS Pre-tained Tokenizer
 
